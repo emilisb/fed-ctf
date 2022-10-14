@@ -1,0 +1,1 @@
+Not every password reaches "x" function. What sort of regex magic is this?

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!--
+Copyright 2018 Google LLC
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    https://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<title>JS Safe - the leading localStorage based safe solution with advanced obfuscation technology</title>
+<!--
+Advertisement:
+Looking for a hand-crafted, browser based virtual safe to store your most
+interesting secrets? Look no further, you have found it. You can order your own
+by sending a mail to js_safe@example.com. When ordering, please specify the
+password you'd like to use to open and close the safe and the content you'd
+like to store. We'll hand craft a unique safe just for you, that only works
+with your password of choice and contains your secret. (We promise we won't
+peek when handling your data.)
+-->
+<style>
+body {
+  text-align: center;
+}
+input {
+  font-size: 200%;
+  margin-top: 5em;
+  text-align: center;
+  width: 26em;
+}
+#result {
+  margin-top: 8em;
+  font-size: 300%;
+  font-family: monospace;
+  font-weight: bold;
+}
+body.granted>#result::before {
+  content: "Access Granted";
+  color: green;
+}
+body.denied>#result::before {
+  content: "Access Denied";
+  color: red;
+}
+#content {
+  display: none;
+}
+body.granted #content {
+  display: initial;
+}
+/*
+Source and license of the animation CSS code:
+
+https://davidwalsh.name/css-cube
+
+Copyright (c) 2013 David Walsh
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+*/
+.wrap {
+  display: inline-block;
+  margin-top: 50px;
+  perspective: 800px;
+  perspective-origin: 50% 100px;
+}
+.cube {
+  position: relative;
+  width: 200px;
+  transform-style: preserve-3d;
+}
+.back {
+  transform: translateZ(-100px) rotateY(180deg);
+}
+.right {
+  transform: rotateY(-270deg) translateX(100px);
+  transform-origin: top right;
+}
+.left {
+  transform: rotateY(270deg) translateX(-100px);
+  transform-origin: center left;
+}
+.top {
+  transform: rotateX(-90deg) translateY(-100px);
+  transform-origin: top center;
+}
+.bottom {
+  transform: rotateX(90deg) translateY(100px);
+  transform-origin: bottom center;
+}
+.front {
+  transform: translateZ(100px);
+}
+@keyframes spin {
+  from { transform: rotateY(0); }
+  to { transform: rotateY(360deg); }
+}
+.cube {
+  animation: spin 20s infinite linear;
+}
+.cube div {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  background: rgba(0, 0, 0, 0.51);
+  box-shadow: inset 0 0 60px white;
+  font-size: 20px;
+  text-align: center;
+  line-height: 200px;
+  color: rgba(0,0,0,0.5);
+  font-family: sans-serif;
+  text-transform: uppercase;
+}
+</style>
+<script>
+async function x(password) {
+    // TODO: check if they can just use Google to get the password once they understand how this works.
+    var code = 'icffjcifkciilckfmckincmfockkpcofqcoircqfscoktcsfucsivcufwcooxcwfycwiAcyfBcwkCcBfDcBiEcDfFcwoGcFfHcFiIcHfJcFkKcJfLcJiMcLfNcwwOcNNPcOOQcPwRcQkScRiTcSfUcPOVcUoWcVfXcOoYcXkЀcYiЁcPNЂcЁwЃcЂoЄcЃkЅcЄiІcOwЇcІoЈcЇkЉcЈfЊcONЋcЊwЌcЋkЍcЌiЎcЋoЏcЎiАcNwБcАkВcБfГcАoДcГiЕcДfЖcЍfЗcUNИcЗwЙcИiКcЙfЛcVkМcЛiНcNoОcНkПcОfРcOiСcOfТcЗoУcЋiФcУfХcUiЦcХfЧcUfШcЗiЩcИoЪcЩiЫcЁiЬcЫfЭcUwЮcЭfЯcQoаcЯkбcаfвcЁkгcвiдdУaеcЊkжcеfзdжaдcдзиdЌaдcдийcЌfкdйaдcдклdУaдcдлмcЊoнcмkоcнiпdоaдcдпрdNaдcдрсcЊiтcсfуdтaфcоfхdфaуcухуcупцdФaуcуцуcуиуcулуcукчdтaуcучуcуиуcухуcулшaaущdЎaъdЖaыcдъьcмfэdьaыcыэыcыпюdеaыcыюыcыхыcыъяшщыѐящщёdСaёcёлёcёлђcЊfѓdђaёcёѓєcЎfѕdєaёcёѕіaѐёїaaујcдщљcЇiњcљfћdњaјcјћјcјeќdЉaјcјќѝcЈiўdѝaјcјўјcјщјcјћјcјfјcјќџїщјѠaaуѡcдщѡcѡћѡcѡeѡcѡќѢcЎkѣdѢaѡcѡѣѡcѡщѡcѡћѡcѡfѡcѡќѤѠщѡѥcчлѥcѥѕѦdЋaѥcѥѦѥcѥиѥcѥхѧaѐѥѨcцкѩdсaѨcѨѩѨcѨиѪdнaѨcѨѪѨcѨзѫaѧѨѬcюэѭcеiѮcѭfѯdѮaѬcѬѯѬcѬзѬcѬцѬcѬиѰaѫѬѱdмaѲcцѱѲcѲѓѳdПaѲcѲѳѲcѲiѲcѲlѲcѲmѴіѲgѵіѫѴѶbѰѵѷcІkѸcѷfѹdѸaѹcѹэѹcѹпѹcѹиѹcѹoѺdСaѹcѹѺѹcѹлѹcѹлѹcѹѓѹcѹѕѻaѐѹѼѻѶщѽceeѾceeѿceeҀceeѽaѼeѾіѽTҀџѾщѿіhҀhѤѿщѽaѼfѾіѽWҀџѾщѿіhҀhѤѿщѽaѼiѾіѽЀҀџѾщѿіhҀhѤѿщѽaѼjѾіѽЅҀџѾщѿіhҀhѤѿщѽaѼkѾіѽЉҀџѾщѿіhҀhѤѿщѽaѼlѾіѽЍҀџѾщѿіhҀhѤѿщѽaѼmѾіѽЏҀџѾщѿіhҀhѤѿщѽaѼnѾіѽВҀџѾщѿіhҀhѤѿщѽaѼoѾіѽЕҀџѾщѿіhҀhѤѿщѽaѼpѾіѽЖҀџѾщѿіhҀhѤѿщѽaѼqѾіѽКҀџѾщѿіhҀhѤѿщѽaѼrѾіѽUҀџѾщѿіhҀhѤѿщѽaѼsѾіѽМҀџѾщѿіhҀhѤѿщѽaѼtѾіѽПҀџѾщѿіhҀhѤѿщѽaѼuѾіѽРҀџѾщѿіhҀhѤѿщѽaѼvѾіѽTҀџѾщѿіhҀhѤѿщѽaѼwѾіѽСҀџѾщѿіhҀhѤѿщѽaѼxѾіѽЙҀџѾщѿіhҀhѤѿщѽaѼyѾіѽТҀџѾщѿіhҀhѤѿщѽaѼAѾіѽWҀџѾщѿіhҀhѤѿщѽaѼBѾіѽRҀџѾщѿіhҀhѤѿщѽaѼCѾіѽФҀџѾщѿіhҀhѤѿщѽaѼDѾіѽЦҀџѾщѿіhҀhѤѿщѽaѼEѾіѽЧҀџѾщѿіhҀhѤѿщѽaѼFѾіѽІҀџѾщѿіhҀhѤѿщѽaѼGѾіѽШҀџѾщѿіhҀhѤѿщѽaѼHѾіѽЪҀџѾщѿіhҀhѤѿщѽaѼIѾіѽЬҀџѾщѿіhҀhѤѿщѽaѼJѾіѽЮҀџѾщѿіhҀhѤѿщѽaѼKѾіѽYҀџѾщѿіhҀhѤѿщѽaѼLѾіѽбҀџѾщѿіhҀhѤѿщѽaѼMѾіѽгҀџѾщѿіhҀhѤѿщяceeѐceeёceeіceeїceeјceeџceeѠceeѡceeѤceeѥceeѧceeѨceeѫceeѬceeѰceeѲceeѴceeѵceeѶceeѹceeѻceeѼceeѾceeѿceeдceeуceeшceeыcee';
+    var env = {
+        a: (x,y) => x[y],
+        b: (x,y) => Function.constructor.apply.apply(x, y),
+        c: (x,y) => x+y,
+        d: (x) => String.fromCharCode(x),
+        e: 0,
+        f: 1,
+        g: new TextEncoder().encode(password),
+        h: 0,
+    };
+    for (var i = 0; i < code.length; i += 4) {
+        var [lhs, fn, arg1, arg2] = code.substr(i, 4);
+        try {
+            env[lhs] = env[fn](env[arg1], env[arg2]);
+        } catch(e) {
+            env[lhs] = new env[fn](env[arg1], env[arg2]);
+        }
+        if (env[lhs] instanceof Promise) env[lhs] = await env[lhs];
+    }
+    return !env.h;
+}
+
+</script>
+<script>
+const alg = { name: 'AES-CBC', iv: Uint8Array.from([8,109,211,169,237,74,43,63,7,57,244,148,29,157,117,47]) };
+const secret = Uint8Array.from([34,14,145,108,237,176,214,180,135,210,23,100,193,65,251,57,85,245,150,39,35,154,214,93,48,139,200,176,131,198,245,37]);
+async function open_safe() {
+  keyhole.disabled = true;
+  password = /^FED{([0-9a-zA-Z_@!$?-]+)}$/.exec(keyhole.value);
+  if (!password || !(await x(password[1]))) return document.body.className = 'denied';
+  document.body.className = 'granted';
+  const pwHash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(password[1])); 
+  const key = await crypto.subtle.importKey('raw', pwHash, alg, false, ['decrypt']);
+  content.value = new TextDecoder("utf-8").decode(await crypto.subtle.decrypt(alg, key, secret))
+}
+</script>
+</head>
+<body>
+<div>
+  <input id="keyhole" autofocus onchange="open_safe()" placeholder="🔑">
+</div>
+<div class="wrap">
+  <div class="cube">
+    <div class="front"></div>
+    <div class="back"></div>
+    <div class="top"></div>
+    <div class="bottom"></div>
+    <div class="left"></div>
+    <div class="right"></div>
+  </div>
+</div>
+<div id="result">
+</div>
+<div>
+  <input id="content">
+</div>
+</body>
+</html>

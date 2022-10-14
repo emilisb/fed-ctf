@@ -1,0 +1,2 @@
+"SubtleCrypto", "sha-256" and "digest" might indicate that our input password will be hashed.
+Better hash it ourselves in case there is some comparison is going on.
